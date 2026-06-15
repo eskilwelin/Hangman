@@ -128,14 +128,8 @@ export default function Login({ onLogin }) {
   const handleConnect = async () => {
     const { ip, username, password } = form;
 
-    if (!ip || !port || !username || !password) {
+    if (!ip || !username || !password) {
       setStatus({ type: "error", message: "All fields are required." });
-      return;
-    }
-
-    const portNum = parseInt(port, 10);
-    if (isNaN(portNum) || portNum < 1 || portNum > 65535) {
-      setStatus({ type: "error", message: "Port must be a number between 1 and 65535." });
       return;
     }
 
@@ -146,7 +140,7 @@ export default function Login({ onLogin }) {
       const res = await fetch("/api/connect", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ip, port: 22, username, password }),
+        body: JSON.stringify({ ip, username, password }),
       });
 
       const data = await res.json();

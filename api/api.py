@@ -1,13 +1,27 @@
-from flask import Flask
-import paramiko
+from flask import Flask, request, jsonify
 import ssh_auth
 from hang_man import *
 
 app = Flask(__name__)
 
-@app.route('/api/connect')
+@app.route('/api/connect', methods=['POST'])
 def connect():
-    return ssh_auth.server_connect()
+    data = request.get_json()
+    
+    success =  ssh_auth.server_connect(
+        data["ip"],
+        data["username"],
+        data["password"]
+    )
+
+    if success:
+        return jsonify({
+            "sessionToken": "placeholder"
+        }), 200
+
+    return jsonify({
+        "error": "SSH authentication failed"
+    }), 401
 
 @app.route('/api/new_word')
 def new_word():
