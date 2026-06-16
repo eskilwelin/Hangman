@@ -20,10 +20,17 @@ def connect():
         }), 200
 
     return jsonify({
-        "error": "SSH authentication failed"
+        "error": "Authentication failed"
     }), 401
 
-@app.route('/api/new_word')
-def new_word():
-    difficulty = ""
-    return word_list.random_word(difficulty)
+@app.route('/api/new_game')
+def new_game():
+    data = request.get_json()
+    
+    
+    word = word_list.random_word(data["difficulty"])
+    
+    return jsonify({
+        "word": word,
+
+    }),
