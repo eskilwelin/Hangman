@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 import ssh_auth
 from hang_man import game_logic
-import store
+from hang_man import store
 from flask_cors import CORS
 
 app = Flask(__name__)

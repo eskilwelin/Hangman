@@ -1,7 +1,7 @@
 import uuid
 
-import word_list
-import store
+from . import word_list
+from . import store
 
 def game_id():
     id = str(uuid.uuid4().hex[:8])
