@@ -194,7 +194,7 @@ export default function Hangman({ onLogout }) {
     try {
       const res = await fetch("/api/guess", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "sessionToken": sessionStorage.getItem("sessionToken") },
         body: JSON.stringify({ game_id: gameId, letter }),
       });
       const data = await res.json();
@@ -232,7 +232,7 @@ export default function Hangman({ onLogout }) {
     try {
       const res = await fetch("/api/new_game", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "sessionToken": sessionStorage.getItem("sessionToken") },
         body: JSON.stringify({ difficulty }),
       });
       if (!res.ok) throw new Error();

@@ -130,7 +130,12 @@ The project was built as a school assignment exploring full-stack web developmen
 - Started by building Hangman as a console game in Python, full version lives in the [Programmering repo](https://github.com/eskilwelin/Programmering)
 - Built the login page frontend with Claude, designed from the start with API calls in mind
 - Adapted an SSH function from class to return `True`/`False` based on connection success
-- Researched how REST APIs work and wired up the `/api/connect` route to pass credentials from the frontend through to the SSH function
+- Learned how REST APIs work and wired up the `/api/connect` route to pass credentials from the frontend through to the SSH function
 - Set up React Router so a successful login redirects to `/hangman`
 - Converted the console Hangman game into API-friendly functions (stateless guessing, game ID based state) so the frontend can drive it over HTTP
 - Generated the game UI with Claude and connected the full stack together
+- Researched authentication tokens and implemented session token validation. Tokens are generated on login, stored server-side, and sent with every subsequent request for the backend to validate 
+
+**Major sources:**
+- https://blog.miguelgrinberg.com/ - Great resource for the API and token research
+- Shoutout Mr. Ray-Fray 

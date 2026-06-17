@@ -2,10 +2,18 @@ from flask import Flask, request, jsonify
 import ssh_auth
 from hang_man import game_logic
 from hang_man import store
+from hang_man import session_token
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
+
+@app.before_request
+def validate_token():
+    if request.endpoint == "connect" or request.method == "OPTIONS":
+        return
+    return session_token.check_token()
+
 
 @app.route('/api/connect', methods=['POST'])
 def connect():
@@ -18,13 +26,16 @@ def connect():
     )
 
     if success:
+        token = session_token.new_token()
+        store.sessions[token] = data["username"]
         return jsonify({
-            "sessionToken": "placeholder"
+            "sessionToken": token
         }), 200
 
     return jsonify({
         "error": "Authentication failed"
     }), 401
+
 
 @app.route('/api/new_game', methods=['POST'])
 def new_game():
