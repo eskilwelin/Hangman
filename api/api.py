@@ -30,7 +30,7 @@ def new_game():
     
     id = game_logic.game_id()
 
-    # word, display, lives, status, guessed_letters
+    # return word, display, lives, status, guessed_letters
     game = game_logic.create_game(data["difficulty"])
 
     store.games[id] = {
