@@ -203,6 +203,7 @@ export default function Hangman({ onLogout }) {
         setStatus(data.status);
         setRevealedWord(data.word);
         if (data.status === "won") setDisplay(data.word.split(""));
+        if (data.status === "lost") setLives(0);
         setPhase("over");
       } else if (data.display) {
         setDisplay(data.display);
