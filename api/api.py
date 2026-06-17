@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 import ssh_auth
-from hang_man import *
+from hang_man import game_logic
 import store
 
 app = Flask(__name__)
@@ -24,23 +24,15 @@ def connect():
         "error": "Authentication failed"
     }), 401
 
-@app.route('/api/new_game')
+@app.route('/api/new_game', methods=['POST'])
 def new_game():
     data = request.get_json()
     
     id = game_logic.game_id()
 
-    # return word, display, lives, status, guessed_letters
     game = game_logic.create_game(data["difficulty"])
-
-    store.games[id] = {
-        "game_id": id,
-        "word": game[0],
-        "display": game[1],
-        "lives": game[2],
-        "status": game[3],
-        "guessed_letters": game[4]
-    }
+    game["game_id"] = id
+    store.games[id] = game
     
     return jsonify({
         "game_id": store.games[id]["game_id"],
@@ -48,9 +40,28 @@ def new_game():
         "lives": store.games[id]["lives"],
         "status": store.games[id]["status"],
         "guessed_letters": store.games[id]["guessed_letters"]
-    }),
+    }), 200
 
 
-@app.route('/api/guess')
+@app.route('/api/guess', methods=['POST'])
 def guess():
     data = request.get_json()
+    id = data["game_id"]
+
+    result = game_logic.user_guess(id, data["letter"])
+    
+    if result in ["error", "wrong_input", "already_guessed"]:
+        return jsonify({"message": result}), 400
+    elif result in ["won", "lost"]:
+        return jsonify({
+            "status": store.games[id]["status"],
+            "word": store.games[id]["word"]
+        }), 200
+    else:
+        return jsonify({
+        "display": store.games[id]["display"],
+        "lives": store.games[id]["lives"],
+        "status": store.games[id]["status"],
+        "guessed_letters": store.games[id]["guessed_letters"]
+        }), 200
+
