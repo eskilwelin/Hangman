@@ -8,9 +8,9 @@ def random_word(difficulty):
     
     match difficulty:
         case 1:
-            f = open(hard_path)
+            f = open(hard_path, "r", encoding="utf-8")
         case _:
-            f = open(easy_path) 
+            f = open(easy_path, "r", encoding="utf-8") 
             
     word_list = f.read().splitlines()
     random_word = random.randint(0, len(word_list) -1)
