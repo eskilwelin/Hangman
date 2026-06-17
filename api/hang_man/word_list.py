@@ -3,12 +3,15 @@ import random
 
 def random_word(difficulty):
     directory = os.path.dirname(os.path.abspath(__file__))
-    hard_path = os.path.join(directory, "hangmanwords.txt")
+    hard_path = os.path.join(directory, "hardwords.txt")
+    medium_path = os.path.join(directory, "mediumwords.txt")
     easy_path = os.path.join(directory, "easywords.txt")
     
     match difficulty:
-        case 1:
+        case "hard":
             f = open(hard_path, "r", encoding="utf-8")
+        case "medium":
+            f = open(medium_path, "r", encoding="utf-8") 
         case _:
             f = open(easy_path, "r", encoding="utf-8") 
             
@@ -16,3 +19,5 @@ def random_word(difficulty):
     random_word = random.randint(0, len(word_list) -1)
     f.close()
     return(word_list[random_word])
+
+print(random_word("easy"))

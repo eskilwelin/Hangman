@@ -1,7 +1,7 @@
 const API_BASE = "http://localhost:5000"; // adjust to wherever Flask runs
 
 export async function startNewGame(difficulty) {
-  const response = await fetch(`${API_BASE}/new_game`, {
+  const response = await fetch(`${API_BASE}/api/new_game`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ difficulty }),
@@ -11,7 +11,7 @@ export async function startNewGame(difficulty) {
 }
 
 export async function submitGuess(gameId, letter) {
-  const response = await fetch(`${API_BASE}/guess`, {
+  const response = await fetch(`${API_BASE}/api/guess`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ game_id: gameId, letter }),
