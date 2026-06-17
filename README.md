@@ -132,7 +132,7 @@ The project was built as a school assignment exploring full-stack web developmen
 - Adapted an SSH function from class to return `True`/`False` based on connection success
 - Learned how REST APIs work and wired up the `/api/connect` route to pass credentials from the frontend through to the SSH function
 - Set up React Router so a successful login redirects to `/hangman`
-- Converted the console Hangman game into API-friendly functions (stateless guessing, game ID based state) so the frontend can drive it over HTTP
+- Converted the console Hangman game into API-friendly functions (stateless guessing, game ID based state) so the frontend can drive it over HTTP. Through this process I learned how to globally store values in dicts and access them across files
 - Generated the game UI with Claude and connected the full stack together
 - Researched authentication tokens and implemented session token validation. Tokens are generated on login, stored server-side, and sent with every subsequent request for the backend to validate 
 

@@ -19,5 +19,3 @@ def random_word(difficulty):
     random_word = random.randint(0, len(word_list) -1)
     f.close()
     return(word_list[random_word])
-
-print(random_word("easy"))
