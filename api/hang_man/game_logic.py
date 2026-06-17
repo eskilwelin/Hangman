@@ -21,6 +21,7 @@ def create_game(difficulty):
 def user_guess(game_id, letter):
     if store.games[game_id]["status"] != "ongoing":
         return "error"
+    
     letters_in_word = list(store.games[game_id]["word"])
 
     if not letter.isalpha() or not len(letter) == 1:

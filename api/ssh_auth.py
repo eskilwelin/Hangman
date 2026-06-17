@@ -20,6 +20,3 @@ def server_connect(SERVER, USERNAME, PASSWORD):
     except Exception as e:
         print(f"Connection failed: {e}")
         return False
-
-if __name__ == "__main__":
-    server_connect()
