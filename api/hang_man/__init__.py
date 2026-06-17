@@ -1,1 +1,1 @@
-__all__ = ["word_list"]
+__all__ = ["word_list", "game_logic"]

@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import ssh_auth
 from hang_man import *
+import store
 
 app = Flask(__name__)
 
@@ -27,10 +28,29 @@ def connect():
 def new_game():
     data = request.get_json()
     
-    
-    word = word_list.random_word(data["difficulty"])
+    id = game_logic.game_id()
+
+    # word, display, lives, status, guessed_letters
+    game = game_logic.create_game(data["difficulty"])
+
+    store.games[id] = {
+        "game_id": id,
+        "word": game[0],
+        "display": game[1],
+        "lives": game[2],
+        "status": game[3],
+        "guessed_letters": game[4]
+    }
     
     return jsonify({
-        "word": word,
-
+        "game_id": store.games[id]["game_id"],
+        "display": store.games[id]["display"],
+        "lives": store.games[id]["lives"],
+        "status": store.games[id]["status"],
+        "guessed_letters": store.games[id]["guessed_letters"]
     }),
+
+
+@app.route('/api/guess')
+def guess():
+    data = request.get_json()

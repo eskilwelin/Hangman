@@ -1,19 +1,22 @@
 """
 TODO: Convert to functions that return JSON for API calls
 """
+import uuid
 
 import word_list
-import uuid
+import store
 
 def game_id():
     id = str(uuid.uuid4().hex[:8])
     return id
 
-def new_game(difficulty):
+def create_game(difficulty):
     word = word_list.random_word(difficulty)
     display = ["_"] * len(word)
     lives = 6
-    return word, display, lives
+    status = "ongoing"
+    guessed_letters = []
+    return word, display, lives, status, guessed_letters
 
 
 
