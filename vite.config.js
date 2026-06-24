@@ -5,7 +5,10 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/api': 'http://localhost:5000'  // forward all /api/* calls to Flask
-    }
-  }
+      '/api': 'http://localhost:5000'
+    },
+    watch: {
+      ignored: ["**/src-tauri/**"],
+    },
+  },
 })
