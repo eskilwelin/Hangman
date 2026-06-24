@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { API_BASE } from "../config";
 
 // ─── Design tokens — exact match with Login.jsx ───────────────────────────
 const C = {
@@ -364,7 +365,7 @@ export default function Hangman({ onLogout }) {
     setGuessedLetters((prev) => [...prev, letter]);
 
     try {
-      const res = await fetch("/api/guess", {
+      const res = await fetch(`${API_BASE}/api/guess`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "sessionToken": sessionStorage.getItem("sessionToken") },
         body: JSON.stringify({ game_id: gameId, letter }),
@@ -403,7 +404,7 @@ export default function Hangman({ onLogout }) {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/new_game", {
+      const res = await fetch(`${API_BASE}/api/new_game`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "sessionToken": sessionStorage.getItem("sessionToken") },
         body: JSON.stringify({ difficulty }),

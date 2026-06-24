@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { API_BASE } from "../config";
 
 const IPAddress = "192.168.1.67"
 
@@ -137,7 +137,7 @@ export default function Login({ onLogin }) {
     setStatus(null);
 
     try {
-      const res = await fetch("/api/connect", {
+      const res = await fetch(`${API_BASE}/api/connect`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ip, username, password }),
