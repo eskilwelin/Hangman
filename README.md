@@ -1,6 +1,6 @@
 # Hangman - Desktop Edition
 
-A native desktop Hangman game built on a Python/Flask backend with a React frontend, wrapped in Tauri. Authentication is handled via SSH, you log in with credentials to an actual SSH server before playing.
+A native desktop Hangman game built on a Python/Flask backend with a React frontend, wrapped in Tauri. Authentication is handled via SSH - you log in with credentials to an actual SSH server before playing.
 
 The Flask backend is compiled into a standalone executable with PyInstaller and launched automatically as a Tauri **sidecar**, so the whole app starts with a single command.
 
@@ -34,6 +34,7 @@ web-project/
 │   │   ├── Hangman.jsx         # Game UI
 │   │   └── Login.jsx           # SSH login form
 │   ├── App.jsx                 # Routing + session state
+│   ├── config.js               # API base URL (relative in dev, absolute in build)
 │   └── main.jsx
 │
 ├── src-tauri/                  # Tauri desktop shell (Rust)
@@ -78,7 +79,6 @@ npm install
 
 ### 2. Set up the Python backend
 
-**Run once:**
 ```bash
 cd api
 python -m venv venv
@@ -135,15 +135,26 @@ That's the only command you need. Tauri compiles the Rust shell, starts the Vite
 
 > **Do not** start Flask manually (`flask run` or running `api.exe` directly) while using `npx tauri dev` — both would compete for port 5000 and the login request would fail.
 
-### 5. (Optional) Build a distributable installer
+### 5. Build a standalone installer
 
-To produce a standalone installer for distribution:
+To produce a double-clickable desktop app that runs without any terminal or dev tools:
 
 ```bash
 npx tauri build
 ```
 
-The installer/bundle is written to `src-tauri/target/release/bundle/`.
+> Make sure `npx tauri dev` is **not** running first — it locks files in `src-tauri/target/` and the build will fail with an "access denied" error. (Windows Defender can also briefly lock newly-built files; if the build fails once with a permission error, just run it again.)
+
+The build writes installers to `src-tauri/target/release/bundle/`:
+
+- `nsis/web-project_0.1.0_x64-setup.exe` — recommended installer
+- `msi/web-project_0.1.0_x64_en-US.msi` — Windows Installer package
+
+Run the installer, and the app is installed with a Start Menu shortcut and the Flask sidecar placed correctly alongside it — launch it like any normal Windows app, no terminal needed.
+
+> **Unsigned app:** Windows SmartScreen may warn that the app is from an unknown publisher (it isn't code-signed — that requires a paid certificate). Click **More info → Run anyway**.
+
+> **After changing `tauri.conf.json`** (e.g. `productName`, window title, icons), rebuild for the changes to take effect — they're baked in at build time. Note that changing `productName` changes the install location, so a renamed build installs *alongside* the old one rather than replacing it.
 
 ---
 
@@ -189,8 +200,8 @@ Vite starts on `http://localhost:5173`. Open that in your browser and use the ap
 The frontend never talks to the SSH server or holds the target word directly — everything goes through the Flask API:
 
 - **Login** sends credentials to `/api/connect`, which attempts an SSH connection via Paramiko. On success the backend issues a session token, stored server-side and sent with every subsequent request.
-- **Gameplay** is fully server-driven. The backend tracks each game by ID, validates guesses, and returns only the masked display, remaining lives, and status. The answer is never sent to the frontend until the game ends.
-- **In development**, the Vite dev server proxies all `/api/...` requests to Flask on port 5000 (configured in `vite.config.js`).
+- **Gameplay** is fully server-driven. The backend tracks each game by ID, validates guesses, and returns only the masked display, remaining lives, and status — the answer is never sent to the frontend until the game ends.
+- **API routing** adapts to the environment via `src/config.js`. In development the frontend uses relative `/api/...` URLs, which the Vite dev server proxies to Flask on port 5000 (configured in `vite.config.js`). In a production build there's no dev server, so it calls the sidecar directly at `http://localhost:5000` — permitted by the `CORS(app)` setting on the backend.
 
 ---
 
@@ -225,8 +236,8 @@ The project was built as a school assignment exploring full-stack web developmen
 - Converted the console Hangman game into API-friendly functions (stateless guessing, game-ID-based state) so the frontend can drive it over HTTP. Through this I learned how to store values globally in dicts and access them across files
 - Generated the game UI with Claude and connected the full stack together
 - Researched authentication tokens and implemented session token validation. Tokens are generated on login, stored server-side, and sent with every subsequent request for the backend to validate
-- Packaged the backend into a standalone executable with PyInstaller, then wrapped the whole stack in Tauri so it runs as a native desktop app. Configured the Flask exe as a Tauri sidecar registered in `tauri.conf.json` and spawned from `lib.rs` on startup, the entire app launches from a single command
+- Packaged the backend into a standalone executable with PyInstaller, then wrapped the whole stack in Tauri so it runs as a native desktop app. Configured the Flask exe as a Tauri sidecar — registered in `tauri.conf.json` and spawned from `lib.rs` on startup — so the entire app launches from a single command
 
 **Major sources:**
-- https://blog.miguelgrinberg.com/ - great resource for the API and token research
+- https://blog.miguelgrinberg.com/ — great resource for the API and token research
 - Shoutout Mr. Ray
