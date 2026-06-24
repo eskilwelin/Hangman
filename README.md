@@ -2,8 +2,6 @@
 
 A native desktop Hangman game built on a Python/Flask backend with a React frontend, wrapped in Tauri. Authentication is handled via SSH - you log in with credentials to an actual SSH server before playing.
 
-The Flask backend is compiled into a standalone executable with PyInstaller and launched automatically as a Tauri **sidecar**, so the whole app starts with a single command.
-
 **Tech stack:** Python · Flask · Paramiko · React · Vite · Tauri · PyInstaller
 
 ---
@@ -13,10 +11,10 @@ The Flask backend is compiled into a standalone executable with PyInstaller and 
 The project was built as a school assignment exploring full-stack web development and human–AI collaboration.
 
 **Division of work:**
-- All Python **application** code (game logic, SSH auth, API routes, session handling) written manually
+- All Python **application** code (game logic, SSH auth, API routes, session handling) written manually by me. 
 - Frontend generated with Claude (AI), with minor manual adjustments
-- AI was used as a bug-tester during Python development — prompted to identify mistakes and areas to improve without providing code solutions. Iterations continued until the logic worked as intended.
-- The desktop **packaging glue** (PyInstaller frozen-path handling, the Flask entry point, and the Tauri/Rust sidecar integration) was done with AI assistance under deadline — distinct from the manually-written application logic above.
+- AI was used as a bug-tester during Python development, prompted to identify mistakes and areas to improve without providing code solutions. Iterations continued until the logic worked as intended.
+- The desktop **packaging glue** (PyInstaller frozen-path handling, the Flask entry point, and the Tauri/Rust sidecar integration) was done with AI assistance under deadline - distinct from the manually-written application logic above.
 
 **How it came together:**
 - Started by building Hangman as a console game in Python; the full version lives in the [Programmering repo](https://github.com/eskilwelin/Programmering)
@@ -27,7 +25,7 @@ The project was built as a school assignment exploring full-stack web developmen
 - Converted the console Hangman game into API-friendly functions (stateless guessing, game-ID-based state) so the frontend can drive it over HTTP. Through this I learned how to store values globally in dicts and access them across files
 - Generated the game UI with Claude and connected the full stack together
 - Researched authentication tokens and implemented session token validation. Tokens are generated on login, stored server-side, and sent with every subsequent request for the backend to validate
-- Packaged the backend into a standalone executable with PyInstaller, then wrapped the whole stack in Tauri so it runs as a native desktop app. Configured the Flask exe as a Tauri sidecar — registered in `tauri.conf.json` and spawned from `lib.rs` on startup — so the entire app launches from a single command
+- Packaged the backend into a standalone executable with PyInstaller, then wrapped the whole stack in Tauri so it runs as a native desktop app. 
 
 **Major sources:**
 - https://blog.miguelgrinberg.com/ — great resource for the API and token research
