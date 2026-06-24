@@ -1,6 +1,6 @@
 # Hangman - Desktop Edition
 
-A native desktop Hangman game built on a Python/Flask backend with a React frontend, wrapped in [Tauri](https://tauri.app/). Authentication is handled via SSH — you log in with credentials to an actual SSH server before playing.
+A native desktop Hangman game built on a Python/Flask backend with a React frontend, wrapped in Tauri. Authentication is handled via SSH, you log in with credentials to an actual SSH server before playing.
 
 The Flask backend is compiled into a standalone executable with PyInstaller and launched automatically as a Tauri **sidecar**, so the whole app starts with a single command.
 
@@ -228,5 +228,5 @@ The project was built as a school assignment exploring full-stack web developmen
 - Packaged the backend into a standalone executable with PyInstaller, then wrapped the whole stack in Tauri so it runs as a native desktop app. Configured the Flask exe as a Tauri sidecar registered in `tauri.conf.json` and spawned from `lib.rs` on startup, the entire app launches from a single command
 
 **Major sources:**
-- https://blog.miguelgrinberg.com/ — great resource for the API and token research
+- https://blog.miguelgrinberg.com/ - great resource for the API and token research
 - Shoutout Mr. Ray
